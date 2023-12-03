@@ -12,8 +12,8 @@ unminimize
 man mlx
 
 # 以下、不明箇所
-For object files, you could add the following rule to your makefile, 
-assuming that you have the mlx 
+For object files, you could add the following rule to your makefile,
+assuming that you have the mlx
 
 for linux source in a directory named mlx_linux in the root of your project:
 
@@ -37,3 +37,14 @@ gcc *.c libft/libft.a -lmlx -lXext -lX11
 gcc *.c libft/libft.a -lmlx -lXext -lX11 -fsanitize=address -g
 valgrind ./a.out mandelbrot
 valgrind --leak-check=full ./a.out mandelbrot
+
+
+# mac
+1. プログラム直下にminilix-linux解凍、、cdで入ってmake、./test/run- ※一個エラーになる
+2. cc  *.c -Imlx -lmlx -framework OpenGL -framework AppKit libft/libft.a -fsanitize=address -g
+
+keysym（最後に校舎で直す？Xライブラリが使えない）
+destroy_display（一箇所コメントアウトすればOK？）
+kakukaku（マウスを動かした後のズーム操作時、一定以上ズームインした時）
+juliaのマウスポイント切り替え時に残像が残る（マンデルでも右クリック後『青緑のあと』にホイールで残像出現、その後右クリックで色変できない）
+	→クリアの問題が怪しい
