@@ -41,7 +41,7 @@ valgrind --leak-check=full ./a.out mandelbrot
 
 # mac
 1. プログラム直下にminilix-linux解凍、、cdで入ってmake、./test/run- ※一個エラーになる
-2. cc  *.c -Imlx -lmlx -framework OpenGL -framework AppKit libft/libft.a -fsanitize=address -g
+2. cc  *.c -Imlx -lmlx libft/libft.a -framework OpenGL -framework AppKit -fsanitize=address -g
 
 keysym（最後に校舎で直す？Xライブラリが使えない）
 destroy_display（一箇所コメントアウトすればOK？）
