@@ -44,7 +44,9 @@ valgrind --leak-check=full ./a.out mandelbrot
 2. cc  *.c -Imlx -lmlx libft/libft.a -framework OpenGL -framework AppKit -fsanitize=address -g
 
 keysym（最後に校舎で直す？Xライブラリが使えない）
-destroy_display（一箇所コメントアウトすればOK？）
+destroy_display（一箇所コメントアウトすればOKそう）
 kakukaku（マウスを動かした後のズーム操作時、一定以上ズームインした時）
+ →ズームの瞬間、マウスポイントを0,0としてから計算している見たい
+
 juliaのマウスポイント切り替え時に残像が残る（マンデルでも右クリック後『青緑のあと』にホイールで残像出現、その後右クリックで色変できない）
 	→クリアの問題が怪しい
