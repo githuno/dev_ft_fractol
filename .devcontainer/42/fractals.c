@@ -13,9 +13,6 @@ int		mandelbrot(double x, double y, t_fractol *fractal)
 	c.x = x;
 	c.y = y;
     esc_value = fractal->c_radius * fractal->c_radius;
-	if((x * x) + (y * y) < 0.0001) //debug
-		return BLACK; //debug
-	
 	while (i < fractal->iterations)
 	{
 		z = add(sqr(z), c); // z = z^2 + c
@@ -65,12 +62,10 @@ int		mandelbar(double x, double y, t_fractol *fractal)
 	i = 0;
 	z.x = 0;
 	z.y = 0;
+
 	c.x = x;
 	c.y = y;
     esc_value = fractal->c_radius * fractal->c_radius;
-	if((x * x) + (y * y) < 0.0001) //debug
-		return BLACK; //debug
-	
 	while (i < fractal->iterations)
 	{
         z = add(cnj(sqr(z)), c); // z = conj(z^2) + c
@@ -83,14 +78,14 @@ int		mandelbar(double x, double y, t_fractol *fractal)
 	return fractal->high_color;
 }
 
-int test_algo(double x, double y, t_fractol *fractal)
-{
-    double distance_squared = x * x + y * y;
+// int test_algo(double x, double y, t_fractol *fractal)
+// {
+//     double distance_squared = x * x + y * y;
 
-	// 距離が1以下の条件
-	if (distance_squared <= 1.0 * 1.0) {
-		return WHITE;
-	} else {
-		return BLACK;
-	}
-}
+// 	// 距離が1以下の条件
+// 	if (distance_squared <= 1.0 * 1.0) {
+// 		return WHITE;
+// 	} else {
+// 		return BLACK;
+// 	}
+// }

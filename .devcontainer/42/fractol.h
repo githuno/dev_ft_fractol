@@ -1,12 +1,14 @@
 #ifndef FRACTOL_H
 # define FRACTOL_H
 
-# include "libft/libft.h"
-# include "minilibx-linux/mlx.h"
-# include "minilibx-linux/mlx_int.h" //XStoreName
+# include "../libft/libft.h"
+// # include "minilibx-linux/mlx.h"
+
+# include "mlx/mlx.h"
 # include <math.h>
-# include <X11/X.h> // マウスイベント
-# include <X11/keysym.h> // キーイベント
+// # include "minilibx-linux/mlx_int.h" //XStoreName
+// # include <X11/X.h> // マウスイベント
+// # include <X11/keysym.h> // キーイベント
 
 # define ARG_ERROR_MSG "Wrong args...This program requires only one argument, \n \
 										\'julia\', \'mandelbrot\' or \'burning\'\n"
@@ -62,7 +64,7 @@ typedef struct {
 	double		w_aspect;
 
 	t_image		img; //アドレス渡しに変更する❌ → x,yに応じて非同期にメモリを動かしてるのか、img.addrが動的に替わりput_pixelで失敗した
-	t_complex	rendering; //アドレス渡しに変更する❌ → 閉じた後メモリ解放がうまくいかなかった
+	t_complex	complex; //アドレス渡しに変更する❌ → 閉じた後メモリ解放がうまくいかなかった
 	double		c_radius;
 	double		zoom;
 	int			iterations;
@@ -76,10 +78,10 @@ typedef struct {
 void		xdisplay_init(t_fractol *fractal);
 void		set_params(t_fractol *fractal, char *name, int color, int (*algo)(double, double, t_fractol *));
 
-t_complex	scaled_point(int x, int y, t_fractol *fractal);
+t_complex	scaling(int x, int y, t_fractol *fractal, int isShift);
 void		rendering(t_fractol *fractal);
 
-int test_algo(double x, double y, t_fractol *fractal);//debug
+// int test_algo(double x, double y, t_fractol *fractal);//debug
 int			mandelbrot(double x, double y, t_fractol *fractal);
 int			julia(double x, double y, t_fractol *fractal);
 int			mandelbar(double x, double y, t_fractol *fractal);

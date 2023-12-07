@@ -1,54 +1,69 @@
 NAME = fractol
 
-$(NAME)
+SRC_PATH = srcs
+SRC = \
+events.c\
+fractals.c\
+ft_fractol.c\
+maths.c\
+rendering.c\
+_log.c
 
-all
+SRCS = $(addprefix $(SRC_PATH)/, $(SRC))
 
-clean
+OBJ_PATH = obj
+OBJ = $(SRC:.c=.o)
+OBJS = $(addprefix $(OBJ_PATH)/, $(OBJ))
 
-fclean
+INC_PATH = includes
+INC = fractol.h
+# INCS = $(addprefix $(INC_PATH)/, $(INC))
 
-re
+LIB_PATH = libft
+LIB = libft.a
+LIBS = $(addprefix $(LIB_PATH)/, $(LIB))
 
-# NAME = fractol
+MLX_PATH = mlx
+MLX = libmlx.a
+MLXS = $(addprefix $(MLX_PATH)/, $(MLX))
 
-# CC = cc
+CC = cc
+CFLAGS = -Wall -Wextra -Werror
 
-# CFLAGS = -Wall -Werror -Wextra -g 
-# MLXFLAGS = -L ./minilibx-linux -lmlx -Ilmlx -lXext -lX11
-# LIBFT = ./libft/libft.a
+CHECK = \033[32m[✔]\033[0m
+REMOVE = \033[31m[✘]\033[0m
+BLUE = \033[1;34m
+RESET = \033[0m
 
-# SRC = ft_fractol.c \
-# 	julia.c \
-# 	complex_math.c \
-# 	hooks.c \
-# 	mandelbrot.c \
-# 	params.c \
-# 	burning.c \
+all: $(NAME)
 
+$(NAME): $(LIBS) $(MLXS) $(OBJS)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBS) $(MLXS) -framework OpenGL -framework AppKit -I$(INC_PATH)
 
-# all: $(NAME)
+$(LIBS):
+	make -C $(LIB_PATH)
 
-# $(NAME): $(SRC:.c=.o)
-# 	$(MAKE) --no-print-directory -C ./libft
-# 	echo "\033[1m LIBFT done \033[0m"
-# 	$(MAKE) --no-print-directory -C ./minilibx-linux
-# 	echo "\033[1m MiniLibX done \033[0m"
-# 	$(CC) $(CFLAGS) -lm $(SRC) $(LIBFT) $(MLXFLAGS) -o $(NAME)
-# 	echo "\033[1m Ready to FRACT-OL \033[0m"
+$(MLXS):
+	make -C $(MLX_PATH)
 
-# clean:
-# 	$(MAKE) clean -C ./libft
-# 	rm -rf $(SRC:.c=.o)
-# 	echo "OBJ deleted"
+$(OBJ_PATH)/%.o: $(SRC_PATH)/%.c
+	mkdir -p $(OBJ_PATH)
+	$(CC) $(CFLAGS) -o $@ -c $< -I $(INC_PATH)
 
-# fclean: clean
-# 	$(MAKE) fclean -C ./libft
-# 	rm -rf $(NAME)
-# 	echo "$(NAME) deleted"
+norm:
+	norminette $(SRCS) $(INCS) $(LIB_PATH)
 
-# re: fclean all
+clean:
+	@ make -C $(LIB_PATH) clean
+	@ make -C $(MLX_PATH) clean
+	@ rm -rf $(OBJ_PATH)
+	@echo "$(REMOVE) $(BLUE)Remove object files... $(RESET)"
 
-# .PHONY: all, clean, fclean, re, bonus
+fclean: clean
+	@ make -C $(LIB_PATH) fclean
+	@ rm -rf $(NAME)
+	@echo "$(REMOVE) $(BLUE)Remove fractol... $(RESET)"
 
-# .SILENT:
+re: fclean all
+
+.PHONY: all norm clean fclean re

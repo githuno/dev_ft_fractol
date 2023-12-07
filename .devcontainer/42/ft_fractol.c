@@ -6,7 +6,7 @@
 /*   By: runoki <runoki@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 09:56:06 by runoki            #+#    #+#             */
-/*   Updated: 2023/11/20 19:26:42 by runoki           ###   ########.fr       */
+/*   Updated: 2023/12/06 19:59:53 by runoki           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ void	set_params(t_fractol *fractal, char *name, int color,
 	fractal->iterations = 42;
 	fractal->mouse_x = -0.4;
 	fractal->mouse_y = 0.65;
-	fractal->rendering.x = 0.0;
-	fractal->rendering.y = 0.0;
+	fractal->complex.x = 0.0;
+	fractal->complex.y = 0.0;
 	fractal->c_radius = RADIUS;
 	fractal->w_width = WIDTH;
 	fractal->w_height = HEIGHT;
@@ -71,7 +71,7 @@ void	xdisplay_init(t_fractol *fractal)
 	img.addr = mlx_get_data_addr(img.ptr, &img.bits_per_pixel, &img.line_length,
 			&img.endian);
 
-	printf("img.line_length = %d\n", img.line_length);	
+	printf("img.line_length = %d\n", img.line_length);
 	// init fractal
 	fractal->img = img;
 
@@ -79,13 +79,16 @@ void	xdisplay_init(t_fractol *fractal)
 	printf("fractal->img.line_length = %d\n", fractal->img.line_length); //debug
 	printf("fractal->img.bits_per_pixel = %d\n", fractal->img.bits_per_pixel); //debug
 	printf("ft_fractal 82: ok\n"); //debug
-	
+
 	// hooks
-	mlx_hook(fractal->win, KeyPress, KeyPressMask, ctl_key, fractal);
-	mlx_hook(fractal->win, ButtonPress, ButtonPressMask, ctl_mouse,
+	mlx_hook(fractal->win, 02, 1L<<0, ctl_key, fractal);
+	// mlx_hook(fractal->win, ButtonPress, ButtonPressMask, ctl_mouse,
+	// 	fractal);
+	mlx_hook(fractal->win, 04, 1L<<2, ctl_mouse,
 		fractal);
-	// mlx_hook(fractal->win, MotionNotify, PointerMotionMask,	ctl_julia, fractal);
-	mlx_hook(fractal->win, DestroyNotify, StructureNotifyMask, close_w, fractal);
+	mlx_hook(fractal->win, 06, 1L<<6,	ctl_julia, fractal);
+	// mlx_hook(fractal->win, DestroyNotify, StructureNotifyMask, close_w, fractal);
+	mlx_hook(fractal->win, 17, 1L<<17, close_w, fractal);
 }
 
 /* ************************************************************************** */
@@ -103,7 +106,7 @@ int	main(int argc, char **argv)
 	// xdisplay_init
 	xdisplay_init(&fractal);
 	// rendering
-	rendering(&fractal);	
+	rendering(&fractal);
 	// loop
 	mlx_loop(fractal.mlx);
 	return (0);
