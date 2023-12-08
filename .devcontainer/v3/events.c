@@ -6,7 +6,7 @@
 /*   By: runoki <runoki@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 17:17:43 by runoki            #+#    #+#             */
-/*   Updated: 2023/12/08 18:02:40 by runoki           ###   ########.fr       */
+/*   Updated: 2023/12/09 00:30:33 by runoki           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static void	zoom(t_fractol *fractal, double scale)
 				- fractal->mouse_y)) / scale;
 }
 
-int	ctl_mouse(int keysym, int x, int y, t_fractol *fractal) // macはマウス逆かも:要件確認すべし  mouse_xはcomplexでいけるかも
+int	ctl_mouse(int keysym, int x, int y, t_fractol *fractal) // macはマウス逆かも:要件確認すべし
 {
 	fractal->mouse_x = scaling(x, y, fractal).x;
 	fractal->mouse_y = scaling(x, y, fractal).y;

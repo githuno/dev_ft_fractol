@@ -6,12 +6,9 @@
 /*   By: runoki <runoki@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 15:46:47 by runoki            #+#    #+#             */
-/*   Updated: 2023/12/08 17:04:23 by runoki           ###   ########.fr       */
+/*   Updated: 2023/12/09 00:10:59 by runoki           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-// map(double num, double new_min, double new_max, double old_min,
-// 		double old_max)
 
 #include "fractol.h"
 
