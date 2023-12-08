@@ -11,7 +11,7 @@
 // # include <X11/keysym.h> // キーイベント
 
 # define ARG_ERROR_MSG "Wrong args...This program requires only one argument, \n \
-										\'julia\', \'mandelbrot\' or \'burning\'\n"
+										\'julia\', \'mandelbrot\' or \'mandelbar\'\n"
 
 // windows size
 #define WIDTH	800
