@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   print_multihex.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: runoki <runoki@student.42tokyo.jp>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/12/08 20:27:50 by runoki            #+#    #+#             */
+/*   Updated: 2023/12/08 20:30:40 by runoki           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 
-int print_ptr_helper(uintptr_t value, int asc, int print_len, char *hex)
+int	print_ptr_helper(uintptr_t value, int asc, int print_len, char *hex)
 {
 	if (value >= 16)
 	{
@@ -11,7 +23,8 @@ int print_ptr_helper(uintptr_t value, int asc, int print_len, char *hex)
 		print_len += print_char(hex[value]);
 	return (print_len);
 }
-int print_multihex_helper(unsigned int value, int asc, int print_len, char *hex)
+
+int	print_multihex_helper(unsigned int value, int asc, int print_len, char *hex)
 {
 	if (value >= 16)
 	{
@@ -23,10 +36,11 @@ int print_multihex_helper(unsigned int value, int asc, int print_len, char *hex)
 	return (print_len);
 }
 
-int print_multihex(void *value, int asc)
+int	print_multihex(void *value, int asc)
 {
-	char *hex;
-	int print_len;
+	char	*hex;
+	int		print_len;
+
 	if (asc <= 0)
 		hex = "0123456789abcdef";
 	else
@@ -37,5 +51,6 @@ int print_multihex(void *value, int asc)
 		print_len += print_str("0x");
 		return (print_ptr_helper((uintptr_t)value, asc, print_len, hex));
 	}
-	return (print_multihex_helper((unsigned int)(uintptr_t)value, asc, print_len, hex));
+	return (print_multihex_helper((unsigned int)(uintptr_t)value, asc,
+		print_len, hex));
 }

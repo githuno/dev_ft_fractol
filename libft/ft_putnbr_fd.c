@@ -6,11 +6,9 @@
 /*   By: runoki <runoki@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 09:03:01 by runoki            #+#    #+#             */
-/*   Updated: 2023/06/01 09:38:37 by runoki           ###   ########.fr       */
+/*   Updated: 2023/12/08 20:26:53 by runoki           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-// Outputs the integer ’n’ to the given file descriptor.
 
 #include "libft.h"
 
@@ -34,12 +32,3 @@ void	ft_putnbr_fd(int n, int fd)
 	c = n % 10 + '0';
 	ft_putchar_fd(c, fd);
 }
-
-// int	main(void)
-// {
-// 	int	n;
-
-// 	n = 2147483647;
-// 	ft_putnbr_fd(n, 1);
-// 	return (0);
-// }

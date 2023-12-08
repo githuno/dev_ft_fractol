@@ -1,14 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   libft.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: runoki <runoki@student.42tokyo.jp>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/12/08 20:25:07 by runoki            #+#    #+#             */
+/*   Updated: 2023/12/08 20:27:12 by runoki           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef LIBFT_H
 # define LIBFT_H
 
 # include <limits.h>
+# include <stdarg.h>
 # include <stddef.h>
 # include <stdint.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
-# include <stdarg.h>
 
 typedef struct s_list
 {
@@ -64,14 +76,11 @@ t_list				*ft_lstmap(t_list *lst, void *(*f)(void *),
 t_list				*ft_lstnew(void *content);
 int					ft_lstsize(t_list *lst);
 
-// printf
-int ft_printf(const char *input, ...);
-// int print_pointer(void *value, int asc);
-int print_unsigned(unsigned int nb);
-int print_str(char *s);
-int print_int(int n);
-int print_char(char c);
-// int print_hex(int value, int asc);
-int print_multihex(void *value, int asc); // test
+int					ft_printf(const char *input, ...);
+int					print_unsigned(unsigned int nb);
+int					print_str(char *s);
+int					print_int(int n);
+int					print_char(char c);
+int					print_multihex(void *value, int asc);
 
 #endif

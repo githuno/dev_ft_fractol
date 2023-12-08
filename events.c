@@ -1,108 +1,89 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   events.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: runoki <runoki@student.42tokyo.jp>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/12/08 17:17:43 by runoki            #+#    #+#             */
+/*   Updated: 2023/12/08 18:02:40 by runoki           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fractol.h"
-static void set_mouse_point(int x, int y, t_fractol *fractal)
-{
-	printf("\n----> mouse\n");//debug
-    t_complex   point;
 
-	point = scaled_point(x, y, fractal);
-	fractal->mouse_x = point.x; // ディスプレイ基準のマウスポイント
-    fractal->mouse_y = point.y; // ディスプレイ基準のマウスポイント
-}
-
-int     close_w(t_fractol *fractal)
+int	close_w(t_fractol *fractal)
 {
-    mlx_destroy_image(fractal->mlx, fractal->img.ptr);
+	mlx_destroy_image(fractal->mlx, fractal->img.ptr);
 	mlx_destroy_window(fractal->mlx, fractal->win);
-    mlx_destroy_display(fractal->mlx);
 	free(fractal->mlx);
-    exit(EXIT_SUCCESS);
-    return (EXIT_SUCCESS);
+	exit(EXIT_SUCCESS);
+	return (EXIT_SUCCESS);
 }
 
-int     ctl_key(int keysym, t_fractol *fractal)
+int	ctl_key(int keysym, t_fractol *fractal)
 {
-    if (keysym == XK_Escape)
-        close_w(fractal);
-    else if (keysym == XK_Left)
-        fractal->shift_x -= 0.1;
-    else if (keysym == XK_Up)
-        fractal->shift_y += 0.1;
-    else if (keysym == XK_Right)
-        fractal->shift_x += 0.1;
-    else if (keysym == XK_Down)
-        fractal->shift_y -= 0.1;
-    else if (keysym == XK_plus)
-        fractal->iterations *= 2; //colorだけの変更は必要？
-        // fractal->color_low += 50;
-    else if (keysym == XK_minus)
-        fractal->iterations /= 2;
-    else if (keysym == XK_r)
-        // fractal->high_color = rand() % 0xFFFFFF;
-        fractal->high_color /= (fractal->mouse_x * fractal->mouse_x);
-        // fractal->color_high -= 50;
-    // else if (keysym == PLUS)
-    //     fractal->color += 100;
-    // else if (keysym == MINUS)
-    //     fractal->color -= 100;
-    else if (keysym == XK_1)
-        set_params(fractal, "mandelbrot", WHITE, mandelbrot);
-    else if (keysym == XK_2)
-        set_params(fractal, "julia", NEON_ORANGE, julia);
-    else if (keysym == XK_3)
-        set_params(fractal, "mandelbar", LIME_SHOCK, mandelbar);
-    else if (keysym == XK_z)
-        set_params(fractal, fractal->name, AQUA_DREAM, fractal->algo);
-    ft_printf("keysym = %d\n", keysym); //debug
-    ft_printf("fractal->iterations = %d\n", fractal->iterations); //debug 
-    rendering(fractal);
-    return (0);
+	if (keysym == 53 || keysym == 65307)
+		close_w(fractal);
+	else if (keysym == 123 || keysym == 65361)
+		fractal->shift_x -= 0.1;
+	else if (keysym == 126 || keysym == 65362)
+		fractal->shift_y += 0.1;
+	else if (keysym == 124 || keysym == 65363)
+		fractal->shift_x += 0.1;
+	else if (keysym == 125 || keysym == 65364)
+		fractal->shift_y -= 0.1;
+	else if (keysym == 24 || keysym == 59)
+		fractal->iterations *= 1.1;
+	else if (keysym == 27 || keysym == 45)
+		fractal->iterations /= 1.1;
+	else if (keysym == 18 || keysym == 49)
+		set_params(fractal, "mandelbrot", WHITE, mandelbrot);
+	else if (keysym == 19 || keysym == 50)
+		set_params(fractal, "julia", NEON_ORANGE, julia);
+	else if (keysym == 20 || keysym == 51)
+		set_params(fractal, BONUS, LIME_SHOCK, mandelbar);
+	else if (keysym == 6 || keysym == 114)
+		set_params(fractal, fractal->name, AQUA_DREAM, fractal->algo);
+	rendering(fractal);
+	return (0);
 }
 
-int     ctl_mouse(int keysym, int x, int y, t_fractol *fractal)
+static void	zoom(t_fractol *fractal, double scale)
 {
-    set_mouse_point(x, y, fractal);
-    
-    printf("\nzoom前の原点の画面上の座標 = (%lf, %lf)\n" // mandelbrotの原点（0,0）が画面上のどこにあるかを表示
-        , -(fractal->shift_x*fractal->zoom)  //debug
-        , -(fractal->shift_y*fractal->zoom)); //debug
-    
-    if (keysym == Button4){ // マウスホイールを上に回したとき
-        fractal->shift_x -= fractal->mouse_x / (fractal->zoom *1.1)
-                                 + fractal->shift_x - fractal->mouse_x;
-        fractal->shift_y -= fractal->mouse_y / (fractal->zoom *1.1)
-                                 + fractal->shift_y - fractal->mouse_y;
-        fractal->zoom *= 1.1;
-        // fractal->iterations++;
-    }
-    else if (keysym == Button5){ // マウスホイールを下に回したとき
-        fractal->shift_x -= fractal->mouse_x / (fractal->zoom /1.1)
-                                 + fractal->shift_x - fractal->mouse_x;
-        fractal->shift_y -= fractal->mouse_y / (fractal->zoom /1.1)
-                                 + fractal->shift_y - fractal->mouse_y;
-        fractal->zoom /= 1.1;
-        // fractal->iterations--;
-    }       
-    // クリックしたらx,yをコンソールに表示する
-    else if (keysym == Button1){   
-        printf("クリックイベント：(x,y) = (%d, %d)\n", x, y); //debug
-        printf("クリックイベント：c(x,y) = (%lf, %lf) \n", fractal->mouse_x, fractal->mouse_y); //debug
-    }
-    else if (keysym == Button3)
-        fractal->high_color /= (fractal->mouse_x * fractal->mouse_x);
-
-    printf("zoom後の原点の画面上の座標 = (%lf, %lf)\n" // mandelbrotの原点（0,0）が画面上のどこにあるかを表示
-        , -(fractal->shift_x*fractal->zoom)  //debug
-        , -(fractal->shift_y*fractal->zoom)); //debug
-    rendering(fractal);
-    return (0);
+	fractal->zoom *= scale;
+	fractal->shift_x = (fractal->shift_x + (fractal->mouse_x * scale
+				- fractal->mouse_x)) / scale;
+	fractal->shift_y = (fractal->shift_y + (fractal->mouse_y * scale
+				- fractal->mouse_y)) / scale;
 }
 
-int     ctl_julia(int x, int y, t_fractol *fractal) //macでもサクサク動かないならいらなそう
+int	ctl_mouse(int keysym, int x, int y, t_fractol *fractal) // macはマウス逆かも:要件確認すべし  mouse_xはcomplexでいけるかも
+{
+	fractal->mouse_x = scaling(x, y, fractal).x;
+	fractal->mouse_y = scaling(x, y, fractal).y;
+	if (keysym == 4)
+		zoom(fractal, 1.1);
+	else if (keysym == 5)
+		zoom(fractal, 1 / 1.1);
+	else if (keysym == 1)
+	{
+		if (fractal->high_color == 0)
+			fractal->high_color = 0xFFFFFF;
+		else
+			fractal->high_color /= (fractal->mouse_x / fractal->mouse_y);
+	}
+	rendering(fractal);
+	return (0);
+}
+
+int	ctl_julia(int x, int y, t_fractol *fractal)
 {
 	if (!ft_strncmp(fractal->name, "julia", 5))
 	{
-		set_mouse_point(x, y, fractal);
+		fractal->mouse_x = scaling(x, y, fractal).x;
+		fractal->mouse_y = scaling(x, y, fractal).y;
 		rendering(fractal);
 	}
-	return 0;
+	return (0);
 }

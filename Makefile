@@ -1,54 +1,67 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: runoki <runoki@student.42tokyo.jp>         +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/12/08 23:05:32 by runoki            #+#    #+#              #
+#    Updated: 2023/12/08 23:10:14 by runoki           ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME = fractol
+CC = cc
+CFLAGS = -Wall -Wextra -Werror
 
-$(NAME)
+SRCS = \
+	events.c\
+	fractals.c\
+	ft_fractol.c\
+	maths.c\
+	rendering.c
 
-all
+OBJS = $(SRCS:.c=.o)
 
-clean
+INC_PATH = .
+INC = fractol.h
+INCS = $(addprefix $(INC_PATH)/, $(INC))
 
-fclean
+LIB_PATH = libft
+LIB = libft.a
+LIBS = $(addprefix $(LIB_PATH)/, $(LIB))
 
-re
+MLX = mlx/libmlx.a
 
-# NAME = fractol
+all: $(NAME)
 
-# CC = cc
+$(NAME): $(OBJS) $(LIBS) $(MLX)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBS) $(MLX) -I$(INC_PATH) -lXext -lX11
+#	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBS) $(MLX) -framework OpenGL -framework AppKit -I$(INC)
 
-# CFLAGS = -Wall -Werror -Wextra -g 
-# MLXFLAGS = -L ./minilibx-linux -lmlx -Ilmlx -lXext -lX11
-# LIBFT = ./libft/libft.a
+$(LIBS):
+	make -C $(LIB_PATH)
 
-# SRC = ft_fractol.c \
-# 	julia.c \
-# 	complex_math.c \
-# 	hooks.c \
-# 	mandelbrot.c \
-# 	params.c \
-# 	burning.c \
+$(OBJS): %.o: %.c
+	$(CC) $(CFLAGS) -o $@ -c $< -I $(INC_PATH)
 
+norm:
+	norminette $(SRCS) $(INCS) $(LIB_PATH)/*.c $(LIB_PATH)/*.h
+jul:
+	./fractol julia
+man:
+	./fractol mandelbrot
+tri:
+	./fractol mandelbar
 
-# all: $(NAME)
+clean:
+	make -C $(LIB_PATH) clean
+	rm -f $(OBJS)
 
-# $(NAME): $(SRC:.c=.o)
-# 	$(MAKE) --no-print-directory -C ./libft
-# 	echo "\033[1m LIBFT done \033[0m"
-# 	$(MAKE) --no-print-directory -C ./minilibx-linux
-# 	echo "\033[1m MiniLibX done \033[0m"
-# 	$(CC) $(CFLAGS) -lm $(SRC) $(LIBFT) $(MLXFLAGS) -o $(NAME)
-# 	echo "\033[1m Ready to FRACT-OL \033[0m"
+fclean: clean
+	make -C $(LIB_PATH) fclean
+	rm -f $(NAME)
 
-# clean:
-# 	$(MAKE) clean -C ./libft
-# 	rm -rf $(SRC:.c=.o)
-# 	echo "OBJ deleted"
+re: fclean all
 
-# fclean: clean
-# 	$(MAKE) fclean -C ./libft
-# 	rm -rf $(NAME)
-# 	echo "$(NAME) deleted"
-
-# re: fclean all
-
-# .PHONY: all, clean, fclean, re, bonus
-
-# .SILENT:
+.PHONY: all norm jul man tri clean fclean re
