@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   maths.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: runoki <runoki@student.42tokyo.jp>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/12/08 15:54:33 by runoki            #+#    #+#             */
+/*   Updated: 2023/12/08 16:26:46 by runoki           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "fractol.h"
 
-double map(double num, double new_min, double new_max, double old_min, double old_max)
+double	map(int num, t_border new, t_border old)
 {
-    return (new_max - new_min) * (num - old_min) / (old_max - old_min) + new_min;
+	return ((new.max - new.min) * (num - old.min) / (old.max - old.min)
+		+ new.min);
 }
 
 t_complex	add(t_complex a, t_complex b)
@@ -24,27 +36,11 @@ t_complex	sqr(t_complex a)
 	return (c);
 }
 
-// 複素共役を計算する関数
 t_complex	cnj(t_complex a)
 {
-	t_complex c;
+	t_complex	c;
+
 	c.x = a.x;
-	c.y = -a.y; // y 成分の符号を反転
+	c.y = -a.y;
 	return (c);
 }
-
-// t_complex	mappoint(t_fractol *fractal, double x, double y)
-// {
-// 	t_complex	c;
-// 	double		l;
-
-// 	if (fractal->width < fractal->height)
-// 		l = fractal->height * fractal->zoom;
-// 	else
-// 		l = fractal->width * fractal->zoom;
-// 	x += fractal->xarrow ;
-// 	y += fractal->yarrow ;
-// 	c.x = 2 * fractal->radius * (x - fractal->width / 2) / l;
-// 	c.y = 2 * fractal->radius * (y - fractal->height / 2) / l;
-// 	return (c);
-// }

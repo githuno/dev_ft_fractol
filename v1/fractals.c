@@ -1,91 +1,94 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fractals.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: runoki <runoki@student.42tokyo.jp>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/12/08 16:30:03 by runoki            #+#    #+#             */
+/*   Updated: 2023/12/08 18:02:17 by runoki           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "fractol.h"
-int		mandelbrot(double x, double y, t_fractol *fractal)
+
+int	mandelbrot(double x, double y, t_fractol *fractal)
 {
-	t_complex z; //原点
-	t_complex c; //座標平面上の点
-	int i;
-    double esc_value;
+	t_complex	z;
+	t_complex	c;
+	int			i;
+	double		esc_value;
 
 	i = 0;
 	z.x = 0;
 	z.y = 0;
 	c.x = x;
 	c.y = y;
-    esc_value = fractal->c_radius * fractal->c_radius;
+	esc_value = fractal->c_radius * fractal->c_radius;
+	fractal->new.min = BLACK;
+	fractal->new.max = fractal->high_color;
+	fractal->old.min = fractal->iterations; //逆？
+	fractal->old.max = 0; //逆？
 	while (i < fractal->iterations)
 	{
-		z = add(sqr(z), c); // z = z^2 + c
-		// 原点からのベクトル距離をescape_valueと比較
+		z = add(sqr(z), c);
 		if ((z.x * z.x) + (z.y * z.y) > esc_value)
-		{
-			return map(i, BLACK, fractal->high_color, fractal->iterations, 0);
-		}
+			return (map(i, fractal->new, fractal->old));
 		++i;
 	}
-	return fractal->high_color;
+	return (fractal->high_color);
 }
 
-int     julia(double x, double y, t_fractol *fractal)
+int	julia(double x, double y, t_fractol *fractal)
 {
-	t_complex z; // 原点
-	t_complex c; // 定数
-	int i;
-    double esc_value;
+	t_complex	z;
+	t_complex	c;
+	int			i;
+	double		esc_value;
 
 	i = 0;
 	z.x = x;
 	z.y = y;
-	c.x = fractal->mouse_x; // 定数の実部
-	c.y = fractal->mouse_y; // 定数の虚部
-    esc_value = fractal->c_radius * fractal->c_radius;
+	c.x = fractal->mouse_x;
+	c.y = fractal->mouse_y;
+	esc_value = fractal->c_radius * fractal->c_radius;
+	fractal->new.min = BLACK;
+	fractal->new.max = fractal->high_color;
+	fractal->old.min = fractal->iterations; //逆？
+	fractal->old.max = 0; //逆？
 	while (i < fractal->iterations)
 	{
-		z = add(sqr(z), c); // z = z^2 + c
-		// 原点からのベクトル距離を escape_value と比較
+		z = add(sqr(z), c);
 		if ((z.x * z.x) + (z.y * z.y) > esc_value)
-		{
-			return map(i, BLACK, fractal->high_color, 0, fractal->iterations);
-		}
+			return (map(i, fractal->new, fractal->old));
 		++i;
 	}
-	return fractal->high_color;
+	return (fractal->high_color);
 }
 
-int		mandelbar(double x, double y, t_fractol *fractal)
+int	mandelbar(double x, double y, t_fractol *fractal)
 {
-	t_complex z; //原点
-	t_complex c; //座標平面上の点
-	int i;
-    double esc_value;
+	t_complex	z;
+	t_complex	c;
+	int			i;
+	double		esc_value;
 
 	i = 0;
 	z.x = 0;
 	z.y = 0;
-
 	c.x = x;
 	c.y = y;
-    esc_value = fractal->c_radius * fractal->c_radius;
+	esc_value = fractal->c_radius * fractal->c_radius;
+	fractal->new.max = fractal->high_color;
+	fractal->new.min = BLACK;
+	fractal->old.max = fractal->iterations;
+	fractal->old.min = 0;
 	while (i < fractal->iterations)
 	{
-        z = add(cnj(sqr(z)), c); // z = conj(z^2) + c
+		z = add(cnj(sqr(z)), c);
 		if ((z.x * z.x) + (z.y * z.y) > esc_value)
-		{
-			return map(i, BLACK, fractal->high_color, 0, fractal->iterations);
-		}
+			return (map(i, fractal->new, fractal->old));
 		++i;
 	}
-	return fractal->high_color;
+	return (fractal->high_color);
 }
-
-// int test_algo(double x, double y, t_fractol *fractal)
-// {
-//     double distance_squared = x * x + y * y;
-
-// 	// 距離が1以下の条件
-// 	if (distance_squared <= 1.0 * 1.0) {
-// 		return WHITE;
-// 	} else {
-// 		return BLACK;
-// 	}
-// }
