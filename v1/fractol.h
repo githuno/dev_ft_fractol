@@ -6,7 +6,7 @@
 /*   By: runoki <runoki@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 18:04:15 by runoki            #+#    #+#             */
-/*   Updated: 2023/12/08 18:07:40 by runoki           ###   ########.fr       */
+/*   Updated: 2023/12/08 22:35:36 by runoki           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define FRACTOL_H
 
 # include "./libft/libft.h"
-# include "mlx/mlx.h"
+# include "./mlx/mlx.h"
 # include <math.h>
 
 # define ARG_ERROR_MSG \

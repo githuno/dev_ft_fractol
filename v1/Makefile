@@ -1,69 +1,67 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: runoki <runoki@student.42tokyo.jp>         +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/12/08 23:05:32 by runoki            #+#    #+#              #
+#    Updated: 2023/12/08 23:10:14 by runoki           ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME = fractol
+CC = cc
+CFLAGS = -Wall -Wextra -Werror
 
-SRC_PATH = srcs
-SRC = \
-events.c\
-fractals.c\
-ft_fractol.c\
-maths.c\
-rendering.c\
-_log.c
+SRCS = \
+	events.c\
+	fractals.c\
+	ft_fractol.c\
+	maths.c\
+	rendering.c
 
-SRCS = $(addprefix $(SRC_PATH)/, $(SRC))
+OBJS = $(SRCS:.c=.o)
 
-OBJ_PATH = obj
-OBJ = $(SRC:.c=.o)
-OBJS = $(addprefix $(OBJ_PATH)/, $(OBJ))
-
-INC_PATH = includes
+INC_PATH = .
 INC = fractol.h
-# INCS = $(addprefix $(INC_PATH)/, $(INC))
+INCS = $(addprefix $(INC_PATH)/, $(INC))
 
 LIB_PATH = libft
 LIB = libft.a
 LIBS = $(addprefix $(LIB_PATH)/, $(LIB))
 
-MLX_PATH = mlx
-MLX = libmlx.a
-MLXS = $(addprefix $(MLX_PATH)/, $(MLX))
-
-CC = cc
-CFLAGS = -Wall -Wextra -Werror
-
-CHECK = \033[32m[✔]\033[0m
-REMOVE = \033[31m[✘]\033[0m
-BLUE = \033[1;34m
-RESET = \033[0m
+MLX = mlx/libmlx.a
 
 all: $(NAME)
 
-$(NAME): $(LIBS) $(MLXS) $(OBJS)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBS) $(MLXS) -framework OpenGL -framework AppKit -I$(INC_PATH)
+$(NAME): $(OBJS) $(LIBS) $(MLX)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBS) $(MLX) -I$(INC_PATH) -lXext -lX11
+#	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBS) $(MLX) -framework OpenGL -framework AppKit -I$(INC)
 
 $(LIBS):
 	make -C $(LIB_PATH)
 
-$(MLXS):
-	make -C $(MLX_PATH)
-
-$(OBJ_PATH)/%.o: $(SRC_PATH)/%.c
-	mkdir -p $(OBJ_PATH)
+$(OBJS): %.o: %.c
 	$(CC) $(CFLAGS) -o $@ -c $< -I $(INC_PATH)
 
 norm:
-	norminette $(SRCS) $(INCS) $(LIB_PATH)
+	norminette $(SRCS) $(INCS) $(LIB_PATH)/*.c $(LIB_PATH)/*.h
+jul:
+	./fractol julia
+man:
+	./fractol mandelbrot
+tri:
+	./fractol mandelbar
 
 clean:
-	@ make -C $(LIB_PATH) clean
-	@ make -C $(MLX_PATH) clean
-	@ rm -rf $(OBJ_PATH)
-	@echo "$(REMOVE) $(BLUE)Remove object files... $(RESET)"
+	make -C $(LIB_PATH) clean
+	rm -f $(OBJS)
 
 fclean: clean
-	@ make -C $(LIB_PATH) fclean
-	@ rm -rf $(NAME)
-	@echo "$(REMOVE) $(BLUE)Remove fractol... $(RESET)"
+	make -C $(LIB_PATH) fclean
+	rm -f $(NAME)
 
 re: fclean all
 
-.PHONY: all norm clean fclean re
+.PHONY: all norm jul man tri clean fclean re
